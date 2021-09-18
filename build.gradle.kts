@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.lang.Integer.max
+import java.lang.Runtime
 
 plugins {
 	id("org.springframework.boot") version "2.5.4"
@@ -43,4 +45,8 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	val cpus: Int = Runtime.getRuntime().availableProcessors()
+	// MySQLは起動にCPUパワーを使うのでCPU数の半分で動かす
+	maxParallelForks = max(cpus / 2, 1)
 }
+
